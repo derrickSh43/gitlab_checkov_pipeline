@@ -1,7 +1,4 @@
-provider "aws" {
-  region = "us-east-1"
 
-}
 terraform {
   required_providers {
     aws = {
@@ -52,7 +49,7 @@ resource "aws_route_table" "custom_route_table_public_subnet" {
   vpc_id = aws_vpc.custom_vpc.id
 
   route {
-    cidr_block = "0.0.0.0"
+    cidr_block = "0.0.0.0/16"
     gateway_id = aws_internet_gateway.internet_gateway.id
   }
 
