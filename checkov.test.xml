@@ -1,0 +1,501 @@
+<?xml version="1.0" ?>
+<testsuites disabled="0" errors="0" failures="16" tests="30" time="0.0">
+	<testsuite disabled="0" errors="0" failures="16" name="terraform scan" skipped="0" tests="20" time="0">
+		<properties>
+			<property name="directory" value="['.']"/>
+			<property name="add_check" value="False"/>
+			<property name="list" value="False"/>
+			<property name="output" value="['junitxml']"/>
+			<property name="output_bc_ids" value="False"/>
+			<property name="include_all_checkov_policies" value="True"/>
+			<property name="quiet" value="False"/>
+			<property name="compact" value="False"/>
+			<property name="framework" value="['all']"/>
+			<property name="skip_framework" value="[]"/>
+			<property name="run_all_external_checks" value="False"/>
+			<property name="soft_fail" value="True"/>
+			<property name="skip_results_upload" value="False"/>
+			<property name="repo_id" value="cli_repo/basic"/>
+			<property name="branch" value="master"/>
+			<property name="skip_download" value="False"/>
+			<property name="use_enforcement_rules" value="False"/>
+			<property name="external_modules_download_path" value=".external_modules"/>
+			<property name="evaluate_variables" value="True"/>
+			<property name="no_cert_verify" value="False"/>
+			<property name="create_baseline" value="False"/>
+			<property name="output_baseline_as_skipped" value="False"/>
+			<property name="secrets_scan_file_type" value="[]"/>
+			<property name="enable_secret_scan_all_files" value="False"/>
+			<property name="block_list_secret_scan" value="[]"/>
+			<property name="summary_position" value="top"/>
+			<property name="skip_resources_without_violations" value="False"/>
+			<property name="deep_analysis" value="False"/>
+			<property name="no_fail_on_crash" value="False"/>
+			<property name="mask" value="defaultdict(&lt;class 'set'&gt;, {})"/>
+			<property name="scan_secrets_history" value="False"/>
+			<property name="secrets_history_timeout" value="12h"/>
+			<property name="custom_tool_name" value="Checkov"/>
+		</properties>
+		<testcase name="[NONE][CKV_AWS_130] Ensure VPC subnets do not assign public IP by default" classname="/main.tf.aws_subnet.public_subnet" file="/main.tf"/>
+		<testcase name="[NONE][CKV_AWS_46] Ensure no hard-coded secrets exist in EC2 user data" classname="/main.tf.aws_instance.example_instance" file="/main.tf"/>
+		<testcase name="[NONE][CKV2_AWS_44] Ensure AWS route table with VPC peering does not contain routes overly permissive to all traffic" classname="/main.tf.aws_route_table.custom_route_table_public_subnet" file="/main.tf"/>
+		<testcase name="[NONE][CKV2_AWS_35] AWS NAT Gateways should be utilized for the default route" classname="/main.tf.aws_route_table.custom_route_table_public_subnet" file="/main.tf"/>
+		<testcase name="[NONE][CKV_AWS_24] Ensure no security groups allow ingress from 0.0.0.0:0 to port 22" classname="/main.tf.aws_security_group.ec2_sg" file="/main.tf">
+			<failure type="failure" message="Ensure no security groups allow ingress from 0.0.0.0:0 to port 22">
+Resource: aws_security_group.ec2_sg
+File: /main.tf: 77-103
+Guideline: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-1-port-security
+
+		77  | resource &quot;aws_security_group&quot; &quot;ec2_sg&quot; {
+		78  |   name        = &quot;custom-ec2-sg&quot;
+		79  |   description = &quot;Security Group for Webserver Instance&quot;
+		80  | 
+		81  |   vpc_id = aws_vpc.custom_vpc.id
+		82  | 
+		83  |   ingress {
+		84  |     from_port       = 0
+		85  |     to_port         = 0
+		86  |     protocol        = &quot;-1&quot;
+		87  |     cidr_blocks = [&quot;0.0.0.0/0&quot;]
+		88  | 
+		89  |   }
+		90  | 
+		91  | 
+		92  |   egress {
+		93  |     from_port   = 0
+		94  |     to_port     = 0
+		95  |     protocol    = &quot;-1&quot;
+		96  |     cidr_blocks = [&quot;0.0.0.0/0&quot;]
+		97  |   }
+		98  | 
+		99  |   tags = {
+		100 |     Name = &quot;custom-ec2-sg&quot;
+		101 | 
+		102 |   }
+		103 | }
+</failure>
+		</testcase>
+		<testcase name="[NONE][CKV_AWS_277] Ensure no security groups allow ingress from 0.0.0.0:0 to port -1" classname="/main.tf.aws_security_group.ec2_sg" file="/main.tf">
+			<failure type="failure" message="Ensure no security groups allow ingress from 0.0.0.0:0 to port -1">
+Resource: aws_security_group.ec2_sg
+File: /main.tf: 77-103
+Guideline: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/ensure-aws-security-group-does-not-allow-all-traffic-on-all-ports
+
+		77  | resource &quot;aws_security_group&quot; &quot;ec2_sg&quot; {
+		78  |   name        = &quot;custom-ec2-sg&quot;
+		79  |   description = &quot;Security Group for Webserver Instance&quot;
+		80  | 
+		81  |   vpc_id = aws_vpc.custom_vpc.id
+		82  | 
+		83  |   ingress {
+		84  |     from_port       = 0
+		85  |     to_port         = 0
+		86  |     protocol        = &quot;-1&quot;
+		87  |     cidr_blocks = [&quot;0.0.0.0/0&quot;]
+		88  | 
+		89  |   }
+		90  | 
+		91  | 
+		92  |   egress {
+		93  |     from_port   = 0
+		94  |     to_port     = 0
+		95  |     protocol    = &quot;-1&quot;
+		96  |     cidr_blocks = [&quot;0.0.0.0/0&quot;]
+		97  |   }
+		98  | 
+		99  |   tags = {
+		100 |     Name = &quot;custom-ec2-sg&quot;
+		101 | 
+		102 |   }
+		103 | }
+</failure>
+		</testcase>
+		<testcase name="[NONE][CKV_AWS_23] Ensure every security group and rule has a description" classname="/main.tf.aws_security_group.ec2_sg" file="/main.tf">
+			<failure type="failure" message="Ensure every security group and rule has a description">
+Resource: aws_security_group.ec2_sg
+File: /main.tf: 77-103
+Guideline: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-31
+
+		77  | resource &quot;aws_security_group&quot; &quot;ec2_sg&quot; {
+		78  |   name        = &quot;custom-ec2-sg&quot;
+		79  |   description = &quot;Security Group for Webserver Instance&quot;
+		80  | 
+		81  |   vpc_id = aws_vpc.custom_vpc.id
+		82  | 
+		83  |   ingress {
+		84  |     from_port       = 0
+		85  |     to_port         = 0
+		86  |     protocol        = &quot;-1&quot;
+		87  |     cidr_blocks = [&quot;0.0.0.0/0&quot;]
+		88  | 
+		89  |   }
+		90  | 
+		91  | 
+		92  |   egress {
+		93  |     from_port   = 0
+		94  |     to_port     = 0
+		95  |     protocol    = &quot;-1&quot;
+		96  |     cidr_blocks = [&quot;0.0.0.0/0&quot;]
+		97  |   }
+		98  | 
+		99  |   tags = {
+		100 |     Name = &quot;custom-ec2-sg&quot;
+		101 | 
+		102 |   }
+		103 | }
+</failure>
+		</testcase>
+		<testcase name="[NONE][CKV_AWS_260] Ensure no security groups allow ingress from 0.0.0.0:0 to port 80" classname="/main.tf.aws_security_group.ec2_sg" file="/main.tf">
+			<failure type="failure" message="Ensure no security groups allow ingress from 0.0.0.0:0 to port 80">
+Resource: aws_security_group.ec2_sg
+File: /main.tf: 77-103
+Guideline: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/ensure-aws-security-groups-do-not-allow-ingress-from-00000-to-port-80
+
+		77  | resource &quot;aws_security_group&quot; &quot;ec2_sg&quot; {
+		78  |   name        = &quot;custom-ec2-sg&quot;
+		79  |   description = &quot;Security Group for Webserver Instance&quot;
+		80  | 
+		81  |   vpc_id = aws_vpc.custom_vpc.id
+		82  | 
+		83  |   ingress {
+		84  |     from_port       = 0
+		85  |     to_port         = 0
+		86  |     protocol        = &quot;-1&quot;
+		87  |     cidr_blocks = [&quot;0.0.0.0/0&quot;]
+		88  | 
+		89  |   }
+		90  | 
+		91  | 
+		92  |   egress {
+		93  |     from_port   = 0
+		94  |     to_port     = 0
+		95  |     protocol    = &quot;-1&quot;
+		96  |     cidr_blocks = [&quot;0.0.0.0/0&quot;]
+		97  |   }
+		98  | 
+		99  |   tags = {
+		100 |     Name = &quot;custom-ec2-sg&quot;
+		101 | 
+		102 |   }
+		103 | }
+</failure>
+		</testcase>
+		<testcase name="[NONE][CKV_AWS_25] Ensure no security groups allow ingress from 0.0.0.0:0 to port 3389" classname="/main.tf.aws_security_group.ec2_sg" file="/main.tf">
+			<failure type="failure" message="Ensure no security groups allow ingress from 0.0.0.0:0 to port 3389">
+Resource: aws_security_group.ec2_sg
+File: /main.tf: 77-103
+Guideline: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-2
+
+		77  | resource &quot;aws_security_group&quot; &quot;ec2_sg&quot; {
+		78  |   name        = &quot;custom-ec2-sg&quot;
+		79  |   description = &quot;Security Group for Webserver Instance&quot;
+		80  | 
+		81  |   vpc_id = aws_vpc.custom_vpc.id
+		82  | 
+		83  |   ingress {
+		84  |     from_port       = 0
+		85  |     to_port         = 0
+		86  |     protocol        = &quot;-1&quot;
+		87  |     cidr_blocks = [&quot;0.0.0.0/0&quot;]
+		88  | 
+		89  |   }
+		90  | 
+		91  | 
+		92  |   egress {
+		93  |     from_port   = 0
+		94  |     to_port     = 0
+		95  |     protocol    = &quot;-1&quot;
+		96  |     cidr_blocks = [&quot;0.0.0.0/0&quot;]
+		97  |   }
+		98  | 
+		99  |   tags = {
+		100 |     Name = &quot;custom-ec2-sg&quot;
+		101 | 
+		102 |   }
+		103 | }
+</failure>
+		</testcase>
+		<testcase name="[NONE][CKV_AWS_382] Ensure no security groups allow egress from 0.0.0.0:0 to port -1" classname="/main.tf.aws_security_group.ec2_sg" file="/main.tf">
+			<failure type="failure" message="Ensure no security groups allow egress from 0.0.0.0:0 to port -1">
+Resource: aws_security_group.ec2_sg
+File: /main.tf: 77-103
+Guideline: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/bc-aws-382
+
+		77  | resource &quot;aws_security_group&quot; &quot;ec2_sg&quot; {
+		78  |   name        = &quot;custom-ec2-sg&quot;
+		79  |   description = &quot;Security Group for Webserver Instance&quot;
+		80  | 
+		81  |   vpc_id = aws_vpc.custom_vpc.id
+		82  | 
+		83  |   ingress {
+		84  |     from_port       = 0
+		85  |     to_port         = 0
+		86  |     protocol        = &quot;-1&quot;
+		87  |     cidr_blocks = [&quot;0.0.0.0/0&quot;]
+		88  | 
+		89  |   }
+		90  | 
+		91  | 
+		92  |   egress {
+		93  |     from_port   = 0
+		94  |     to_port     = 0
+		95  |     protocol    = &quot;-1&quot;
+		96  |     cidr_blocks = [&quot;0.0.0.0/0&quot;]
+		97  |   }
+		98  | 
+		99  |   tags = {
+		100 |     Name = &quot;custom-ec2-sg&quot;
+		101 | 
+		102 |   }
+		103 | }
+</failure>
+		</testcase>
+		<testcase name="[NONE][CKV_AWS_88] EC2 instance should not have public IP." classname="/main.tf.aws_instance.example_instance" file="/main.tf">
+			<failure type="failure" message="EC2 instance should not have public IP.">
+Resource: aws_instance.example_instance
+File: /main.tf: 105-117
+Guideline: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/public-policies/public-12
+
+		105 | resource &quot;aws_instance&quot; &quot;example_instance&quot; {
+		106 |   ami                         = &quot;ami-06b21ccaeff8cd686&quot; # Specify the base AMI ID
+		107 |   instance_type               = &quot;t2.micro&quot;     # Specify the instance type
+		108 |   associate_public_ip_address = true           # Adjust as needed
+		109 |   subnet_id                   = aws_subnet.public_subnet[0].id
+		110 | 
+		111 | 
+		112 |   user_data = filebase64(&quot;userdata.sh&quot;)
+		113 |   tags = {
+		114 |     Name = &quot;example-instance&quot;
+		115 |   }
+		116 | 
+		117 | }</failure>
+		</testcase>
+		<testcase name="[NONE][CKV_AWS_126] Ensure that detailed monitoring is enabled for EC2 instances" classname="/main.tf.aws_instance.example_instance" file="/main.tf">
+			<failure type="failure" message="Ensure that detailed monitoring is enabled for EC2 instances">
+Resource: aws_instance.example_instance
+File: /main.tf: 105-117
+Guideline: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/ensure-that-detailed-monitoring-is-enabled-for-ec2-instances
+
+		105 | resource &quot;aws_instance&quot; &quot;example_instance&quot; {
+		106 |   ami                         = &quot;ami-06b21ccaeff8cd686&quot; # Specify the base AMI ID
+		107 |   instance_type               = &quot;t2.micro&quot;     # Specify the instance type
+		108 |   associate_public_ip_address = true           # Adjust as needed
+		109 |   subnet_id                   = aws_subnet.public_subnet[0].id
+		110 | 
+		111 | 
+		112 |   user_data = filebase64(&quot;userdata.sh&quot;)
+		113 |   tags = {
+		114 |     Name = &quot;example-instance&quot;
+		115 |   }
+		116 | 
+		117 | }</failure>
+		</testcase>
+		<testcase name="[NONE][CKV_AWS_135] Ensure that EC2 is EBS optimized" classname="/main.tf.aws_instance.example_instance" file="/main.tf">
+			<failure type="failure" message="Ensure that EC2 is EBS optimized">
+Resource: aws_instance.example_instance
+File: /main.tf: 105-117
+Guideline: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-ec2-is-ebs-optimized
+
+		105 | resource &quot;aws_instance&quot; &quot;example_instance&quot; {
+		106 |   ami                         = &quot;ami-06b21ccaeff8cd686&quot; # Specify the base AMI ID
+		107 |   instance_type               = &quot;t2.micro&quot;     # Specify the instance type
+		108 |   associate_public_ip_address = true           # Adjust as needed
+		109 |   subnet_id                   = aws_subnet.public_subnet[0].id
+		110 | 
+		111 | 
+		112 |   user_data = filebase64(&quot;userdata.sh&quot;)
+		113 |   tags = {
+		114 |     Name = &quot;example-instance&quot;
+		115 |   }
+		116 | 
+		117 | }</failure>
+		</testcase>
+		<testcase name="[NONE][CKV_AWS_79] Ensure Instance Metadata Service Version 1 is not enabled" classname="/main.tf.aws_instance.example_instance" file="/main.tf">
+			<failure type="failure" message="Ensure Instance Metadata Service Version 1 is not enabled">
+Resource: aws_instance.example_instance
+File: /main.tf: 105-117
+Guideline: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-general-31
+
+		105 | resource &quot;aws_instance&quot; &quot;example_instance&quot; {
+		106 |   ami                         = &quot;ami-06b21ccaeff8cd686&quot; # Specify the base AMI ID
+		107 |   instance_type               = &quot;t2.micro&quot;     # Specify the instance type
+		108 |   associate_public_ip_address = true           # Adjust as needed
+		109 |   subnet_id                   = aws_subnet.public_subnet[0].id
+		110 | 
+		111 | 
+		112 |   user_data = filebase64(&quot;userdata.sh&quot;)
+		113 |   tags = {
+		114 |     Name = &quot;example-instance&quot;
+		115 |   }
+		116 | 
+		117 | }</failure>
+		</testcase>
+		<testcase name="[NONE][CKV_AWS_8] Ensure all data stored in the Launch configuration or instance Elastic Blocks Store is securely encrypted" classname="/main.tf.aws_instance.example_instance" file="/main.tf">
+			<failure type="failure" message="Ensure all data stored in the Launch configuration or instance Elastic Blocks Store is securely encrypted">
+Resource: aws_instance.example_instance
+File: /main.tf: 105-117
+Guideline: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/general-13
+
+		105 | resource &quot;aws_instance&quot; &quot;example_instance&quot; {
+		106 |   ami                         = &quot;ami-06b21ccaeff8cd686&quot; # Specify the base AMI ID
+		107 |   instance_type               = &quot;t2.micro&quot;     # Specify the instance type
+		108 |   associate_public_ip_address = true           # Adjust as needed
+		109 |   subnet_id                   = aws_subnet.public_subnet[0].id
+		110 | 
+		111 | 
+		112 |   user_data = filebase64(&quot;userdata.sh&quot;)
+		113 |   tags = {
+		114 |     Name = &quot;example-instance&quot;
+		115 |   }
+		116 | 
+		117 | }</failure>
+		</testcase>
+		<testcase name="[NONE][CKV2_AWS_12] Ensure the default security group of every VPC restricts all traffic" classname="/main.tf.aws_vpc.custom_vpc" file="/main.tf">
+			<failure type="failure" message="Ensure the default security group of every VPC restricts all traffic">
+Resource: aws_vpc.custom_vpc
+File: /main.tf: 12-19
+Guideline: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-4
+
+		12 | resource &quot;aws_vpc&quot; &quot;custom_vpc&quot; {
+		13 |   cidr_block           = &quot;10.230.0.0/16&quot;
+		14 |   enable_dns_support   = true
+		15 |   enable_dns_hostnames = true
+		16 |   tags = {
+		17 |     Name = &quot;Derrick VPC&quot;
+		18 |   }
+		19 | }
+</failure>
+		</testcase>
+		<testcase name="[NONE][CKV2_AWS_5] Ensure that Security Groups are attached to another resource" classname="/main.tf.aws_security_group.ec2_sg" file="/main.tf">
+			<failure type="failure" message="Ensure that Security Groups are attached to another resource">
+Resource: aws_security_group.ec2_sg
+File: /main.tf: 77-103
+Guideline: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/ensure-that-security-groups-are-attached-to-ec2-instances-or-elastic-network-interfaces-enis
+
+		77  | resource &quot;aws_security_group&quot; &quot;ec2_sg&quot; {
+		78  |   name        = &quot;custom-ec2-sg&quot;
+		79  |   description = &quot;Security Group for Webserver Instance&quot;
+		80  | 
+		81  |   vpc_id = aws_vpc.custom_vpc.id
+		82  | 
+		83  |   ingress {
+		84  |     from_port       = 0
+		85  |     to_port         = 0
+		86  |     protocol        = &quot;-1&quot;
+		87  |     cidr_blocks = [&quot;0.0.0.0/0&quot;]
+		88  | 
+		89  |   }
+		90  | 
+		91  | 
+		92  |   egress {
+		93  |     from_port   = 0
+		94  |     to_port     = 0
+		95  |     protocol    = &quot;-1&quot;
+		96  |     cidr_blocks = [&quot;0.0.0.0/0&quot;]
+		97  |   }
+		98  | 
+		99  |   tags = {
+		100 |     Name = &quot;custom-ec2-sg&quot;
+		101 | 
+		102 |   }
+		103 | }
+</failure>
+		</testcase>
+		<testcase name="[NONE][CKV2_AWS_11] Ensure VPC flow logging is enabled in all VPCs" classname="/main.tf.aws_vpc.custom_vpc" file="/main.tf">
+			<failure type="failure" message="Ensure VPC flow logging is enabled in all VPCs">
+Resource: aws_vpc.custom_vpc
+File: /main.tf: 12-19
+Guideline: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/logging-9-enable-vpc-flow-logging
+
+		12 | resource &quot;aws_vpc&quot; &quot;custom_vpc&quot; {
+		13 |   cidr_block           = &quot;10.230.0.0/16&quot;
+		14 |   enable_dns_support   = true
+		15 |   enable_dns_hostnames = true
+		16 |   tags = {
+		17 |     Name = &quot;Derrick VPC&quot;
+		18 |   }
+		19 | }
+</failure>
+		</testcase>
+		<testcase name="[NONE][CKV2_AWS_41] Ensure an IAM role is attached to EC2 instance" classname="/main.tf.aws_instance.example_instance" file="/main.tf">
+			<failure type="failure" message="Ensure an IAM role is attached to EC2 instance">
+Resource: aws_instance.example_instance
+File: /main.tf: 105-117
+Guideline: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/ensure-an-iam-role-is-attached-to-ec2-instance
+
+		105 | resource &quot;aws_instance&quot; &quot;example_instance&quot; {
+		106 |   ami                         = &quot;ami-06b21ccaeff8cd686&quot; # Specify the base AMI ID
+		107 |   instance_type               = &quot;t2.micro&quot;     # Specify the instance type
+		108 |   associate_public_ip_address = true           # Adjust as needed
+		109 |   subnet_id                   = aws_subnet.public_subnet[0].id
+		110 | 
+		111 | 
+		112 |   user_data = filebase64(&quot;userdata.sh&quot;)
+		113 |   tags = {
+		114 |     Name = &quot;example-instance&quot;
+		115 |   }
+		116 | 
+		117 | }</failure>
+		</testcase>
+		<testcase name="[NONE][CKV2_AWS_19] Ensure that all EIP addresses allocated to a VPC are attached to EC2 instances" classname="/main.tf.aws_eip.eip" file="/main.tf">
+			<failure type="failure" message="Ensure that all EIP addresses allocated to a VPC are attached to EC2 instances">
+Resource: aws_eip.eip
+File: /main.tf: 71-74
+Guideline: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/ensure-that-all-eip-addresses-allocated-to-a-vpc-are-attached-to-ec2-instances
+
+		71 | resource &quot;aws_eip&quot; &quot;eip&quot; {
+		72 |   domain     = &quot;vpc&quot;
+		73 |   depends_on = [aws_internet_gateway.internet_gateway]
+		74 | }
+</failure>
+		</testcase>
+	</testsuite>
+	<testsuite disabled="0" errors="0" failures="0" name="gitlab_ci scan" skipped="0" tests="10" time="0">
+		<properties>
+			<property name="directory" value="['.']"/>
+			<property name="add_check" value="False"/>
+			<property name="list" value="False"/>
+			<property name="output" value="['junitxml']"/>
+			<property name="output_bc_ids" value="False"/>
+			<property name="include_all_checkov_policies" value="True"/>
+			<property name="quiet" value="False"/>
+			<property name="compact" value="False"/>
+			<property name="framework" value="['all']"/>
+			<property name="skip_framework" value="[]"/>
+			<property name="run_all_external_checks" value="False"/>
+			<property name="soft_fail" value="True"/>
+			<property name="skip_results_upload" value="False"/>
+			<property name="repo_id" value="cli_repo/basic"/>
+			<property name="branch" value="master"/>
+			<property name="skip_download" value="False"/>
+			<property name="use_enforcement_rules" value="False"/>
+			<property name="external_modules_download_path" value=".external_modules"/>
+			<property name="evaluate_variables" value="True"/>
+			<property name="no_cert_verify" value="False"/>
+			<property name="create_baseline" value="False"/>
+			<property name="output_baseline_as_skipped" value="False"/>
+			<property name="secrets_scan_file_type" value="[]"/>
+			<property name="enable_secret_scan_all_files" value="False"/>
+			<property name="block_list_secret_scan" value="[]"/>
+			<property name="summary_position" value="top"/>
+			<property name="skip_resources_without_violations" value="False"/>
+			<property name="deep_analysis" value="False"/>
+			<property name="no_fail_on_crash" value="False"/>
+			<property name="mask" value="defaultdict(&lt;class 'set'&gt;, {})"/>
+			<property name="scan_secrets_history" value="False"/>
+			<property name="secrets_history_timeout" value="12h"/>
+			<property name="custom_tool_name" value="Checkov"/>
+		</properties>
+		<testcase name="[NONE][CKV_GITLABCI_1] Suspicious use of curl with CI environment variables in script" classname="/.gitlab-ci.yml.plan" file="/.gitlab-ci.yml"/>
+		<testcase name="[NONE][CKV_GITLABCI_1] Suspicious use of curl with CI environment variables in script" classname="/.gitlab-ci.yml.validate" file="/.gitlab-ci.yml"/>
+		<testcase name="[NONE][CKV_GITLABCI_1] Suspicious use of curl with CI environment variables in script" classname="/.gitlab-ci.yml.checkov" file="/.gitlab-ci.yml"/>
+		<testcase name="[NONE][CKV_GITLABCI_1] Suspicious use of curl with CI environment variables in script" classname="/.gitlab-ci.yml.checkov" file="/.gitlab-ci.yml"/>
+		<testcase name="[NONE][CKV_GITLABCI_1] Suspicious use of curl with CI environment variables in script" classname="/.gitlab-ci.yml.plan" file="/.gitlab-ci.yml"/>
+		<testcase name="[NONE][CKV_GITLABCI_1] Suspicious use of curl with CI environment variables in script" classname="/.gitlab-ci.yml.apply" file="/.gitlab-ci.yml"/>
+		<testcase name="[NONE][CKV_GITLABCI_1] Suspicious use of curl with CI environment variables in script" classname="/.gitlab-ci.yml.apply" file="/.gitlab-ci.yml"/>
+		<testcase name="[NONE][CKV_GITLABCI_1] Suspicious use of curl with CI environment variables in script" classname="/.gitlab-ci.yml.destroy" file="/.gitlab-ci.yml"/>
+		<testcase name="[NONE][CKV_GITLABCI_1] Suspicious use of curl with CI environment variables in script" classname="/.gitlab-ci.yml.destroy" file="/.gitlab-ci.yml"/>
+		<testcase name="[NONE][CKV_GITLABCI_3] Detecting image usages in gitlab workflows" classname="/.gitlab-ci.yml.checkov" file="/.gitlab-ci.yml"/>
+	</testsuite>
+</testsuites>
+
